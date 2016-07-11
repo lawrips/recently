@@ -2,12 +2,12 @@
 
 const should = require('should');
 
-let Recent = require('../lib/index');
+let Recently = require('../lib/index');
 
 
 describe('tests', () => {
     it('count items from the last n', (done) => {
-        let cache = new Recent();
+        let cache = new Recently();
         cache.add(true);
         cache.add(true);
         cache.add(false);
@@ -23,7 +23,7 @@ describe('tests', () => {
     });
 
     it('count items from the last seconds', (done) => {
-        let cache = new Recent();
+        let cache = new Recently();
         cache.add(true);
         setTimeout(() => {
             cache.add(true);
@@ -43,11 +43,20 @@ describe('tests', () => {
         }, 1000);
     });
 
-    it('test getLast', (done) => {
-        let cache = new Recent();
+    it('test last()', (done) => {
+        let cache = new Recently();
         cache.add(1);
         cache.add(2);
         cache.add(3);
+        JSON.stringify(cache.last(4)).should.equal('[1,2,3]');
+        JSON.stringify(cache.last(3)).should.equal('[1,2,3]');
+        JSON.stringify(cache.last(2)).should.equal('[2,3]');
+        JSON.stringify(cache.last(1)).should.equal('[3]');
+        done();
+    });
+
+    it('repeat test last() by passing an array in the constructor', (done) => {
+        let cache = new Recently([1,2,3]);
         JSON.stringify(cache.last(4)).should.equal('[1,2,3]');
         JSON.stringify(cache.last(3)).should.equal('[1,2,3]');
         JSON.stringify(cache.last(2)).should.equal('[2,3]');
