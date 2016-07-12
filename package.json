@@ -1,6 +1,6 @@
 {
   "name": "recently",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Helper to get the last time something happened",
   "main": "lib/index.js",
   "repository": {
