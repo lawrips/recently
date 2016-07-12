@@ -6,44 +6,7 @@ let Recently = require('../lib/index');
 
 
 describe('tests', () => {
-    it('count items from the last n', (done) => {
-        let cache = new Recently();
-        cache.add(true);
-        cache.add(true);
-        cache.add(false);
-        cache.add(false);
-        cache.add(false);
-
-        cache.countLast(true, 5).should.equal(2);
-        cache.countLast(true, 4).should.equal(1);
-        cache.countLast(false, 5).should.equal(3);
-        cache.countLast(false, 2).should.equal(2);
-        cache.countLast(false, 1).should.equal(1);
-        done();
-    });
-
-    it('count items from the last seconds', (done) => {
-        let cache = new Recently();
-        cache.add(true);
-        setTimeout(() => {
-            cache.add(true);
-
-            setTimeout(() => {
-                cache.add(false);
-
-                cache.countTime(true, 2).should.be.equal(1);
-                cache.countTime(true, 3).should.be.equal(2);
-                cache.countTime(true, 4).should.be.equal(2);
-                cache.countTime(false, 2).should.be.equal(1);
-                cache.countTime(false, 10).should.be.equal(1);
-
-                done();
-                        
-            }, 1500);
-        }, 1000);
-    });
-
-    it('test last()', (done) => {
+    it('last(num)', (done) => {
         let cache = new Recently();
         cache.add(1);
         cache.add(2);
@@ -55,12 +18,77 @@ describe('tests', () => {
         done();
     });
 
+    it('last(value, nun)', (done) => {
+        let cache = new Recently();
+        cache.add(true);
+        cache.add(true);
+        cache.add(false);
+        cache.add(false);
+        cache.add(false);
+
+        cache.last(true, 5).should.equal(2);
+        cache.last(true, 4).should.equal(1);
+        cache.last(false, 5).should.equal(3);
+        cache.last(false, 2).should.equal(2);
+        cache.last(false, 1).should.equal(1);
+        done();
+    });
+
     it('repeat test last() by passing an array in the constructor', (done) => {
         let cache = new Recently([1,2,3]);
         JSON.stringify(cache.last(4)).should.equal('[1,2,3]');
         JSON.stringify(cache.last(3)).should.equal('[1,2,3]');
         JSON.stringify(cache.last(2)).should.equal('[2,3]');
         JSON.stringify(cache.last(1)).should.equal('[3]');
+        done();
+    });
+
+    it('ago(seconds)', (done) => {
+        let cache = new Recently();
+        cache.add(true);
+        setTimeout(() => {
+            cache.add(true);
+
+            setTimeout(() => {
+
+                JSON.stringify(cache.ago(1)).should.be.equal('[]');
+                cache.add(false);
+                JSON.stringify(cache.ago(1)).should.be.equal('[false]');
+                JSON.stringify(cache.ago(2)).should.be.equal('[true,false]');
+                JSON.stringify(cache.ago(3)).should.be.equal('[true,true,false]');
+                JSON.stringify(cache.ago(4)).should.be.equal('[true,true,false]');
+                done();
+                        
+            }, 1500);
+        }, 1000);
+    });
+
+    it('ago(value, seconds)', (done) => {
+        let cache = new Recently();
+        cache.add(true);
+        setTimeout(() => {
+            cache.add(true);
+
+            setTimeout(() => {
+                cache.ago(true, 1).should.be.equal(0);
+                cache.add(false);
+                cache.ago(true, 2).should.be.equal(1);
+                cache.ago(true, 3).should.be.equal(2);
+                cache.ago(true, 4).should.be.equal(2);
+                cache.ago(false, 2).should.be.equal(1);
+                cache.ago(false, 10).should.be.equal(1);
+
+                done();
+                        
+            }, 1500);
+        }, 1000);
+    });
+
+    it('check maxSize in the constructor works', (done) => {
+        let cache = new Recently([1,2,3], {maxSize: 3});
+        JSON.stringify(cache.last(4)).should.equal('[1,2,3]');
+        cache.add(4);
+        JSON.stringify(cache.last(4)).should.equal('[2,3,4]');
         done();
     });
 });
