@@ -24,8 +24,12 @@ var Recently = require('recently');
 var cache = new Recently(['a','b','b','c']);
 ```
 
-### Last
-Retrieve the last items that occur in the cache:
+### last([value], number)
+Retrieves the last items that were inserted into the cache. 
+
+Arguments: 
+1. [value]. Optional value which, when present, is used to compare to each item in the cache. If present then last() returns a count. 
+2. number. The number of items to extract from the cache.    
 
 ```
 // get the last two items in the cache
@@ -35,8 +39,12 @@ cache.last(2); // returns ['b','c']
 cache.last('b', 3); // returns 2
 ```
 
-### Ago
-Retrieve the last items, based on time since they were entered into the cache.
+### ago([value], seconds)
+Retrieves the items in the cache since a certain duration from insertion.
+
+Arguments:
+1. [value]. Optional value which, when present, is used to compare to each item in the cache. If present then ago() returns a count. 
+2. seconds. The number of seconds back we want to check the cache.
 
 Imagine we enter some value over time:
 
