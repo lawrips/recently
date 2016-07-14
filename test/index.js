@@ -29,6 +29,25 @@ describe('tests', () => {
         done();
     });
 
+    it('lastTime(num)', (done) => {
+        let cache = new Recently();
+        JSON.stringify(cache.last(1)).should.equal('[]');
+        cache.add(1);
+        cache.add({'hello':'world'});
+        setTimeout(() => {
+            cache.add(2);
+            cache.add({'hello2':'world2'});
+            setTimeout(() => {
+                cache.add(3);
+                should.not.exist(cache.lastTime(4));
+                cache.lastTime(3).should.be.greaterThan(cache.lastTime(2));
+                cache.lastTime(2).should.be.greaterThan(cache.lastTime(1));
+                cache.lastTime({'hello2':'world2'}).should.be.greaterThan(cache.lastTime({'hello':'world'}));
+                done();
+            }, 10);
+        }, 10);                
+    });
+
     it('last(value, nun)', (done) => {
         let cache = new Recently();
         cache.last(true, 1).should.equal(0);
