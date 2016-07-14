@@ -31,6 +31,9 @@ Arguments:
 1. [value]. Optional value which, when present, is used to compare to each item in the cache. If present then last() returns a count. 
 2. number. The number of items to extract from the cache.    
 
+Returns:
+1. If value is present, a bool is returned (true if the item was found). If value is not present, then an array is returned
+
 ```
 // get the last two items in the cache
 cache.last(2); // returns ['b','c']
@@ -39,12 +42,35 @@ cache.last(2); // returns ['b','c']
 cache.last('b', 3); // returns 2
 ```
 
+### lastTime(value)
+Retrieves the last time a given value was added to the cache.  
+
+Arguments: 
+1. [value]. The value to retrieve from the cache 
+
+Returns:
+1. A date in ISO format if the item is found (or null if not) 
+
+```
+var cache = new Recently();
+cache.add('a');
+cache.add('b');
+cache.add('b');
+
+// get the last time the item 'b' was entered 
+cache.lastTime('b'); // returns a date in ISO format (e.g. 2016-07-13T19:12:07.602Z)
+```
+
+
 ### ago([value], seconds)
 Retrieves the items in the cache since a certain duration from insertion.
 
 Arguments:
 1. [value]. Optional value which, when present, is used to compare to each item in the cache. If present then ago() returns a count. 
 2. seconds. The number of seconds back we want to check the cache.
+
+Returns:
+1. If value is present, a bool is returned (true if the item was found). If value is not present, then an array is returned
 
 Imagine we enter some value over time:
 
@@ -67,7 +93,10 @@ Now if were to immediately query the cache with the .ago() method, we would see 
 cache.ago(1); // returns [false]
 cache.ago(2); // returns [true,false]
 cache.ago(3); // returns [true,true,false]
+```
 
+As with, the last() method, an optional value can also be provided:
+```
 // count the number of items in the cache that match 'true'
 cache.ago(true, 2); // returns 1
 
