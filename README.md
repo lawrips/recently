@@ -1,8 +1,7 @@
 # recently
 Helper to get the last time something happened 
 
-## Usage
-Initialization:
+## Initialization
 
 ```
 var Recently = require('recently');
@@ -24,15 +23,17 @@ var Recently = require('recently');
 var cache = new Recently(['a','b','b','c']);
 ```
 
-### last([value], number)
+## last([value], number)
 Retrieves the last items that were inserted into the cache. 
 
-Arguments: 
+### Arguments 
 1. [value]. Optional value which, when present, is used to compare to each item in the cache. If present then last() returns a count. 
 2. number. The number of items to extract from the cache.    
 
-Returns:
-1. If value is present, a bool is returned (true if the item was found). If value is not present, then an array is returned
+### Returns
+If value is present, a bool is returned (true if the item was found). If value is not present, then an array is returned
+
+### Example
 
 ```
 // get the last two items in the cache
@@ -42,14 +43,16 @@ cache.last(2); // returns ['b','c']
 cache.last('b', 3); // returns 2
 ```
 
-### lastTime(value)
+## lastTime(value)
 Retrieves the last time a given value was added to the cache.  
 
-Arguments: 
+### Arguments 
 1. [value]. The value to retrieve from the cache 
 
-Returns:
-1. A date in ISO format if the item is found (or null if not) 
+### Returns
+A date in ISO format if the item is found (or null if not) 
+
+### Example
 
 ```
 var cache = new Recently();
@@ -62,16 +65,17 @@ cache.lastTime('b'); // returns a date in ISO format (e.g. 2016-07-13T19:12:07.6
 ```
 
 
-### ago([value], seconds)
+## ago([value], seconds)
 Retrieves the items in the cache since a certain duration from insertion.
 
-Arguments:
+### Arguments
 1. [value]. Optional value which, when present, is used to compare to each item in the cache. If present then ago() returns a count. 
 2. seconds. The number of seconds back we want to check the cache.
 
-Returns:
-1. If value is present, a bool is returned (true if the item was found). If value is not present, then an array is returned
+### Return
+If value is present, a bool is returned (true if the item was found). If value is not present, then an array is returned
 
+### Example
 Imagine we enter some value over time:
 
 ```
